@@ -213,11 +213,13 @@ void draw() {
        if(firstEnemyX>width){
         gameState = WAVE3;
         firstEnemyX=0;
-        enemyY2[0]=floor(random(100,200));
+        firstEnemyY=floor(random(150,300));
         for(int i=0; i<5; i++){
-          enemyX2[i] = 0;
           enemyPos1[i] = NOBOMB;
           currentFrame[i] = 0;
+    }
+    for(int i=0; i<8; i++){
+       enemyX2[i] = 0;
     }
       }
        if(hpX<=0){
@@ -234,25 +236,26 @@ void draw() {
      if(enemyPos2[i] == NOBOMB){
     if(i == 0 || i ==7){
       enemyX2[0] = firstEnemyX;
-      enemyX2[7] = enemyX2[0]-enemySpace*4;
-      enemyY2[i] = enemyY2[0];
+      enemyX2[7] = firstEnemyX-enemySpace*4;
+      enemyY2[i] = firstEnemyY;
       image(enemy2[i],enemyX2[i],enemyY2[i]);
     }else if(i == 1 || i==5){
-      enemyX2[1] =  enemyX2[0]-enemySpace;
-      enemyX2[5] = enemyX2[0]-enemySpace*3;
-      enemyY2[i] = enemyY2[0]-enemySpace;
+      enemyX2[1] = firstEnemyX-enemySpace;
+      enemyX2[5] = firstEnemyX-enemySpace*3;
+      enemyY2[i] = firstEnemyY-enemySpace;
       image(enemy2[i],enemyX2[i],enemyY2[i]);
     }else if(i == 2 || i == 6){
-      enemyX2[i] = enemyX2[i-1];
-      enemyY2[i] = enemyY2[0]+enemySpace;
+      enemyX2[2] = firstEnemyX-enemySpace;
+      enemyX2[6] = firstEnemyX-enemySpace*3;
+      enemyY2[i] = firstEnemyY+enemySpace;
       image(enemy2[i],enemyX2[i],enemyY2[i]);
     }else if(i == 3){
-      enemyX2[i] = enemyX2[i-1]-enemySpace;
-      enemyY2[i] = enemyY2[0]-enemySpace*2;
+      enemyX2[i] = firstEnemyX-enemySpace-enemySpace;
+      enemyY2[i] = firstEnemyY-enemySpace*2;
       image(enemy2[i],enemyX2[i],enemyY2[i]);
     }else{
-      enemyX2[i] = enemyX2[i-1];
-      enemyY2[i] = enemyY2[0]+enemySpace*2;
+      enemyX2[i] = firstEnemyX-enemySpace-enemySpace;
+      enemyY2[i] = firstEnemyY+enemySpace*2;
        image(enemy2[i],enemyX2[i],enemyY2[i]);
     }
   }else{
@@ -269,12 +272,11 @@ void draw() {
 
    } 
    
-     if(firstEnemyX>width){
+     if(firstEnemyX-150>width){
      gameState = WAVE1;
      firstEnemyX=0-firstEnemyX+5*enemySpace;
      firstEnemyY=floor(random(50,420));
      for(int i=0; i<5;i++){
-        enemyPos2[i] = NOBOMB;
         enemyPos1[i] = NOBOMB;
         
        }
@@ -282,7 +284,8 @@ void draw() {
       enemyX2[i] = -100;
       enemyY2[i] = -100;
       currentFrame2[i] = 0;
-     }
+      enemyPos2[i] = NOBOMB;
+       }
      }
   
    if(hpX<=0){
@@ -294,7 +297,7 @@ void draw() {
      for(int i=0; i<8; i++){
       enemyX2[i] = -100;
       enemyY2[i] = -100;
-      currentFrame[i] = 0;
+      currentFrame2[i] = 0;
      }
    }
  
