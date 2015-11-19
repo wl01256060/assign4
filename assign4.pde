@@ -24,22 +24,24 @@ int enemySpace=60;
 int enemyNbr1 = 5;
 int enemyNbr2 = 8;
 PImage [] enemy1 = new PImage[enemyNbr1];
-PImage [] enemy = new PImage[enemyNbr2];
+PImage [] enemy2 = new PImage[enemyNbr2];
 int [] enemyPos1 = new int[enemyNbr1];
-int [][] enemyPos = new int[5][5];
+int [] enemyPos2 = new int[enemyNbr2];
 int [] enemyX1 = new int[enemyNbr1];
 int [] enemyY1 = new int[enemyNbr1];
-int [] enemyX = new int[enemyNbr2];
-int [] enemyY = new int[enemyNbr2];
+int [] enemyX2 = new int[enemyNbr2];
+int [] enemyY2 = new int[enemyNbr2];
 final int NOBOMB = 0;
 final int BOMB = 1;
 PImage [] flame = new PImage[5];
 int [] currentFrame = new int[5];
+int [] currentFrame2 = new int[8];
 boolean trigger = false;
 int [] flameX1 = new int[enemyNbr1];
 int [] flameY1 = new int[enemyNbr1];
-int [] flameX = new int[enemyNbr2];
-int [] flameY = new int[enemyNbr2];
+int [] flameX2 = new int[enemyNbr2];
+int [] flameY2 = new int[enemyNbr2];
+
 
 void setup () {
   size(640, 480) ;
@@ -70,7 +72,7 @@ void setup () {
   gameState = 1;
   
    for(int i=0; i<enemyNbr2; i++){
-    enemy[i] = loadImage("img/enemy.png");
+    enemy2[i] = loadImage("img/enemy.png");
   }
   
    for(int i=0; i<enemyNbr1; i++){
@@ -78,10 +80,8 @@ void setup () {
     currentFrame[i] = 0;
   }
   
-  for(int i=0; i<5; i++){
-    for(int j=0; j<5; j++){
-      enemyPos[i][j] = NOBOMB;
-    }
+  for(int i=0; i<8; i++){   
+      enemyPos2[i] = NOBOMB;
   }
   
   for(int i=0; i<5; i++){
@@ -121,21 +121,18 @@ void draw() {
       treasureY=floor(random(60,420));
      }
   
-  //enemy
-  
-
+  //enemy hit
   for(int i=0; i<8; i++){
-     if(fighterX <= enemyX[i]+40 && fighterX>=enemyX[i]-40 && fighterY <= enemyY[i]+50 && fighterY>= enemyY[i]-50){
+     if(fighterX <= enemyX2[i]+40 && fighterX>=enemyX2[i]-40 && fighterY <= enemyY2[i]+50 && fighterY>= enemyY2[i]-50){
         hpX -= 40;
-        for(int k=0; k<5; k++){
-        for(int j=0; j<5; j++){
-          enemyPos[k][j] = BOMB;
-          enemyX[i] = -100;
-          enemyY[i] = -100;
-         }
-       }
-     }
-  }
+        flameX2[i] = enemyX2[i];
+        flameY2[i] = enemyY2[i];         
+        enemyPos2[i] = BOMB;     
+             }
+          }
+      
+   
+ 
   
    for(int i=0; i<5; i++){
      if(fighterX <= enemyX1[i]+40 && fighterX>=enemyX1[i]-40 && fighterY <= enemyY1[i]+50 && fighterY>= enemyY1[i]-50){
@@ -146,6 +143,7 @@ void draw() {
          }
        }
      
+  //step
   switch(gameState){
      case GAME_START:
       image(start2,0,0);
@@ -214,9 +212,10 @@ void draw() {
      }
        if(firstEnemyX>width){
         gameState = WAVE3;
-        firstEnemyX=0-firstEnemyX+5*enemySpace;
-        firstEnemyY=floor(random(50,150));
+        firstEnemyX=0;
+        enemyY2[0]=floor(random(100,200));
         for(int i=0; i<5; i++){
+          enemyX2[i] = 0;
           enemyPos1[i] = NOBOMB;
           currentFrame[i] = 0;
     }
@@ -230,52 +229,72 @@ void draw() {
        }
    break;
    case WAVE3:
-     firstEnemyX += 3;
-      enemyX[0] = firstEnemyX+0*enemySpace;
-      enemyY[0] = firstEnemyY+2*enemySpace;
-      enemyX[1] = firstEnemyX+1*enemySpace;
-      enemyY[1] = firstEnemyY+1*enemySpace;
-      enemyX[2] = firstEnemyX+2*enemySpace;
-      enemyY[2] = firstEnemyY+0*enemySpace;
-      enemyX[3] = firstEnemyX+3*enemySpace;
-      enemyY[3] = firstEnemyY+1*enemySpace;
-      enemyX[4] = firstEnemyX+4*enemySpace;
-      enemyY[4] = firstEnemyY+2*enemySpace;
-      enemyX[5] = firstEnemyX+1*enemySpace;
-      enemyY[5] = firstEnemyY+3*enemySpace;
-      enemyX[6] = firstEnemyX+2*enemySpace;
-      enemyY[6] = firstEnemyY+4*enemySpace;
-      enemyX[7] = firstEnemyX+3*enemySpace;
-      enemyY[7] = firstEnemyY+3*enemySpace;    
-
-   for(int i=0; i<5; i++){
-     for(int j=0; j<5; j++){
-       if(j==-i+2 || j==-i+6 || j==i-2 || j==i+2){
-         if(enemyPos[i][j] == NOBOMB){
-            image(enemy[i],firstEnemyX+i*enemySpace,firstEnemyY+j*enemySpace);
-          }
+   firstEnemyX += 3;
+   for(int i=0; i<8; i++){
+     if(enemyPos2[i] == NOBOMB){
+    if(i == 0 || i ==7){
+      enemyX2[0] = firstEnemyX;
+      enemyX2[7] = enemyX2[0]-enemySpace*4;
+      enemyY2[i] = enemyY2[0];
+      image(enemy2[i],enemyX2[i],enemyY2[i]);
+    }else if(i == 1 || i==5){
+      enemyX2[1] =  enemyX2[0]-enemySpace;
+      enemyX2[5] = enemyX2[0]-enemySpace*3;
+      enemyY2[i] = enemyY2[0]-enemySpace;
+      image(enemy2[i],enemyX2[i],enemyY2[i]);
+    }else if(i == 2 || i == 6){
+      enemyX2[i] = enemyX2[i-1];
+      enemyY2[i] = enemyY2[0]+enemySpace;
+      image(enemy2[i],enemyX2[i],enemyY2[i]);
+    }else if(i == 3){
+      enemyX2[i] = enemyX2[i-1]-enemySpace;
+      enemyY2[i] = enemyY2[0]-enemySpace*2;
+      image(enemy2[i],enemyX2[i],enemyY2[i]);
+    }else{
+      enemyX2[i] = enemyX2[i-1];
+      enemyY2[i] = enemyY2[0]+enemySpace*2;
+       image(enemy2[i],enemyX2[i],enemyY2[i]);
+    }
+  }else{
+     if(frameCount % 6 == 0){
+        currentFrame2[i]++;
       }
-   }
-   }
+     if(currentFrame2[i] < 5){
+        image(flame[currentFrame2[i]],flameX2[i],flameY2[i]);
+      }
+    enemyX2[i] = -100;
+    enemyY2[i] = -100;
+  }
       
-   if(firstEnemyX>width){
+
+   } 
+   
+     if(firstEnemyX>width){
      gameState = WAVE1;
      firstEnemyX=0-firstEnemyX+5*enemySpace;
      firstEnemyY=floor(random(50,420));
-     for(int i=0; i<5; i++){
-       for(int j=0; j<5; j++){
-        enemyPos[i][j] = NOBOMB;
+     for(int i=0; i<5;i++){
+        enemyPos2[i] = NOBOMB;
         enemyPos1[i] = NOBOMB;
+        
        }
+     for(int i=0; i<8; i++){
+      enemyX2[i] = -100;
+      enemyY2[i] = -100;
+      currentFrame2[i] = 0;
      }
-  }
+     }
+  
    if(hpX<=0){
      gameState = GAME_LOSE;
      for(int i=0; i<5; i++){
-       for(int j=0; j<5; j++){
-        enemyPos[i][j] = NOBOMB;
+        enemyPos2[i] = NOBOMB;
         enemyPos1[i] = NOBOMB;
       }
+     for(int i=0; i<8; i++){
+      enemyX2[i] = -100;
+      enemyY2[i] = -100;
+      currentFrame[i] = 0;
      }
    }
  
@@ -305,7 +324,7 @@ void draw() {
         hpX = 0;
       }
       
-       //move
+   //move
   if(upPressed){
     fighterY -= fighterSpeed;
   }
