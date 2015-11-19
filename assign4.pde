@@ -272,7 +272,7 @@ void draw() {
 
    } 
    
-     if(firstEnemyX-150>width){
+     if(firstEnemyX-180>width){
      gameState = WAVE1;
      firstEnemyX=0-firstEnemyX+5*enemySpace;
      firstEnemyY=floor(random(50,420));
@@ -291,12 +291,12 @@ void draw() {
    if(hpX<=0){
      gameState = GAME_LOSE;
      for(int i=0; i<5; i++){
-        enemyPos2[i] = NOBOMB;
         enemyPos1[i] = NOBOMB;
       }
      for(int i=0; i<8; i++){
       enemyX2[i] = -100;
       enemyY2[i] = -100;
+      enemyPos2[i] = NOBOMB;
       currentFrame2[i] = 0;
      }
    }
