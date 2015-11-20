@@ -73,24 +73,20 @@ void setup () {
   
    for(int i=0; i<enemyNbr2; i++){
     enemy2[i] = loadImage("img/enemy.png");
+    enemyPos2[i] = NOBOMB;
+    currentFrame2[i] = 0;
+    enemyX2[i] = -100;
+    enemyY2[i] = -100;
   }
   
    for(int i=0; i<enemyNbr1; i++){
     enemy1[i] = loadImage("img/enemy.png");
+    enemyPos1[i] = NOBOMB;
     currentFrame[i] = 0;
-  }
-  
-  for(int i=0; i<8; i++){   
-      enemyPos2[i] = NOBOMB;
-  }
-  
-  for(int i=0; i<5; i++){
-      enemyPos1[i] = NOBOMB;
-    }
-  
-   for(int i=0; i<5; i++){
     flame[i] = loadImage("img/flame"+(i+1)+".png");
   }
+  
+  
   frameRate(60);
 }
 
@@ -158,10 +154,10 @@ void draw() {
     case WAVE1:  
       firstEnemyX += 3;
       for(int i=0; i<5; i++){
-        if(enemyPos1[i] == NOBOMB){       
-         image(enemy1[i],firstEnemyX+i*enemySpace,firstEnemyY);
+        if(enemyPos1[i] == NOBOMB){      
          enemyX1[i] = firstEnemyX+i*enemySpace;
          enemyY1[i] = firstEnemyY;
+         image(enemy1[i],enemyX1[i],enemyY1[i]);
         }else{
           if(frameCount % 6 == 0){
              currentFrame[i]++;
@@ -196,9 +192,9 @@ void draw() {
       firstEnemyX += 3;
      for(int i=0; i<5; i++){
        if(enemyPos1[i] == NOBOMB){
-        image(enemy1[i],firstEnemyX+i*enemySpace,firstEnemyY+i*enemySpace/2);
         enemyX1[i] = firstEnemyX+i*enemySpace;
         enemyY1[i] = firstEnemyY+i*enemySpace/2;
+        image(enemy1[i],enemyX1[i],enemyY1[i]);
          }else{
          if(frameCount % 6 == 0){
              currentFrame[i]++;
